@@ -1,14 +1,22 @@
 <script setup>
-import MyHello from './components/MyHello.vue' 
+import Header from './components/Header.vue' 
+
+import CardList from './components/CardList.vue'  
 
 
 </script>
 
 <template>
-<p>App vue</p>
-<h1>armine</h1>
-<MyHello />
- 
+    <div class="bg-white w-4/5 m-auto  rounded-xl shadow-xl mt-10">
+        <Header />
+        <div class="p-10">
+            <h2 class="text-3xl font-bold m-auto mb-10" >Все кроссовки</h2>
+            <CardList />
+            
+        </div>
+        
+    </div>
+    
 </template>
 
 
