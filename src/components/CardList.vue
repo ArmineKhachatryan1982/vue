@@ -1,6 +1,10 @@
 <script setup>
 import Card from './Card.vue'
 
+defineProps({
+  Items:Array
+})
+
 const onClickAdd = ()=>{
   alert('added')
 }
@@ -8,11 +12,8 @@ const onClickAdd = ()=>{
 </script>
 
 <template>
-  <div class="grid grid-cols-4 gap-5" >
   
-   
-  </div>
-    <div class="grid grid-cols-4 gap-5">
+    <div class="border grid grid-cols-4 gap-5">
         <Card 
             title = "Мужские Крассовки Нике Блазер Мид"
             imageUrl = "/sneakers/sneakers-1.jpg"
