@@ -32,7 +32,7 @@ const items=[{"id":1,"title":"Крассовки Feater reader","price":1200,"im
                     </div>
                 </div>
             </div>
-            <CardList  />
+            <CardList :items="items" />
         </div>  
     </div>
     

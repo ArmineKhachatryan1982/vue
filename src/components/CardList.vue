@@ -2,7 +2,7 @@
 import Card from './Card.vue'
 
 defineProps({
-  Items:Array
+  items:Array
 })
 
 const onClickAdd = ()=>{
@@ -14,7 +14,7 @@ const onClickAdd = ()=>{
 <template>
   
     <div class="border grid grid-cols-4 gap-5">
-        <Card 
+        <!-- <Card 
             title = "Мужские Крассовки Нике Блазер Мид"
             imageUrl = "/sneakers/sneakers-1.jpg"
             :price = "5000"
@@ -22,6 +22,14 @@ const onClickAdd = ()=>{
             :onClickAdd = "onClickAdd"
           
             :isAdded="true"
+            /> -->
+            <Card v-for="item in items"
+              :key="item.id"
+              :title = "item.title"
+              :imageUrl = "item.imageUrl"
+              :price = "item.price"
+              :isFavorite = "false"
+              :onClickAdd = "onClickAdd"
             />
         
 
