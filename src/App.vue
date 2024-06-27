@@ -1,8 +1,18 @@
 <script setup>
+import { onMounted } from 'vue';
+
 import Header from './components/Header.vue' 
 import Card from './components/Card.vue' 
 import CardList from './components/CardList.vue'  
 import Drawer from './components/Drawer.vue' 
+
+onMounted(()=>{
+    fetch('https://033b20b544163707.mokky.dev/items')
+    .then((res)=>res.json())
+    .then((data)=>{
+        console.log(data)
+    })
+})
 const items=[{"id":1,"title":"Крассовки Feater reader","price":1200,"imageUrl":"/sneakers/sneakers-1.jpg"},{"id":2,"title":"Крассовки Broun  reader","price":1800,"imageUrl":"/sneakers/sneakers-2.jpg"},{"id":3,"title":"Крассовки Green  reader","price":2500,"imageUrl":"/sneakers/sneakers-3.jpg"},{"id":4,"title":"Крассовки Nike  reader","price":1900,"imageUrl":"/sneakers/sneakers-4.jpg"},{"id":5,"title":"Крассовки Puma  reader","price":2500,"imageUrl":"/sneakers/sneakers-5.jpg"},{"id":6,"title":"Крассовки Broun  reader","price":2400,"imageUrl":"/sneakers/sneakers-6.jpg"},{"id":7,"title":"Крассовки Broun1  reader","price":2500,"imageUrl":"/sneakers/sneakers-7.jpg"},{"id":8,"title":"Крассовки Broun2  reader","price":2800,"imageUrl":"/sneakers/sneakers-8.jpg"},{"id":9,"title":"Крассовки Broun3  reader","price":2800,"imageUrl":"/sneakers/sneakers-9.jpg"},{"id":10,"title":"Крассовки Broun4  reader","price":3500,"imageUrl":"/sneakers/sneakers-10.jpg"}] 
 
 </script>
