@@ -1,19 +1,54 @@
 <script setup>
-import { onMounted } from 'vue';
+import axios from 'axios';
+import { onMounted, ref, watch  } from 'vue';
 
 import Header from './components/Header.vue' 
 import Card from './components/Card.vue' 
 import CardList from './components/CardList.vue'  
 import Drawer from './components/Drawer.vue' 
+// ref mez misht veradarznum e objekt, dra hamar arjeqnery vercnelwuc dimum enq valuin
 
-onMounted(()=>{
-    fetch('https://033b20b544163707.mokky.dev/items')
-    .then((res)=>res.json())
-    .then((data)=>{
-        console.log(data)
-    })
-})
-const items=[{"id":1,"title":"Крассовки Feater reader","price":1200,"imageUrl":"/sneakers/sneakers-1.jpg"},{"id":2,"title":"Крассовки Broun  reader","price":1800,"imageUrl":"/sneakers/sneakers-2.jpg"},{"id":3,"title":"Крассовки Green  reader","price":2500,"imageUrl":"/sneakers/sneakers-3.jpg"},{"id":4,"title":"Крассовки Nike  reader","price":1900,"imageUrl":"/sneakers/sneakers-4.jpg"},{"id":5,"title":"Крассовки Puma  reader","price":2500,"imageUrl":"/sneakers/sneakers-5.jpg"},{"id":6,"title":"Крассовки Broun  reader","price":2400,"imageUrl":"/sneakers/sneakers-6.jpg"},{"id":7,"title":"Крассовки Broun1  reader","price":2500,"imageUrl":"/sneakers/sneakers-7.jpg"},{"id":8,"title":"Крассовки Broun2  reader","price":2800,"imageUrl":"/sneakers/sneakers-8.jpg"},{"id":9,"title":"Крассовки Broun3  reader","price":2800,"imageUrl":"/sneakers/sneakers-9.jpg"},{"id":10,"title":"Крассовки Broun4  reader","price":3500,"imageUrl":"/sneakers/sneakers-10.jpg"}] 
+const items = ref([]) //{ value:[] }
+const sortBy = ref('');
+const searchQuery = ref('');
+const onChangeSelect = (event) => {
+    sortBy.value=event.target.value
+}
+
+onMounted(async()=>{
+    // fetch('https://033b20b544163707.mokky.dev/items')
+    // .then((res)=>res.json())
+    // .then((data)=>{
+    //     console.log(data)
+    // })
+    // axios.get('https://033b20b544163707.mokky.dev/items').then((resp)=>console.log(resp.data))
+    try{
+        const { data } = await  axios.get('https://033b20b544163707.mokky.dev/items')
+        
+        
+        items.value = data
+        console.log(items.value)
+
+    }catch(err){
+        console.log(err)
+
+    }
+});
+// kochvum e hooker watch
+watch(sortBy,async () => {
+    try{
+        const { data } = await  axios.get('https://033b20b544163707.mokky.dev/items?sortBy='+sortBy.value)
+        
+        
+        items.value = data
+        console.log(items.value)
+
+    }catch(err){
+        console.log(err)
+
+    }
+
+});
 
 </script>
 
@@ -26,10 +61,10 @@ const items=[{"id":1,"title":"Крассовки Feater reader","price":1200,"im
             <div class=" border flex justify-between items-center">
                 <h2 class="text-3xl font-bold m-auto mb-8" >Все кроссовки</h2>
                 <div class="flex gap-4">
-                    <select class="py-2 px-3 border rounded-md outline-none">
-                        <option>По названи</option>
-                        <option>По цене (дешеве)</option>
-                        <option>По цене (дорогие)</option>
+                    <select  @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
+                        <option value="name">По названи</option>
+                        <option value="price">По цене (дешеве)</option>
+                        <option value="-price">По цене (дорогие)</option>
                     </select>
                 
                     <div class="relative">
