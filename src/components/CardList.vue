@@ -28,8 +28,9 @@ const onClickAdd = ()=>{
               :title = "item.title"
               :imageUrl = "item.imageUrl"
               :price = "item.price"
-              :isFavorite = "false"
               :onClickAdd = "onClickAdd"
+              :isFavorite = "false"
+              
             />
         
 
