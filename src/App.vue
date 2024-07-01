@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref,reactive, watch   } from 'vue';
+import { onMounted, ref,reactive,provide, watch   } from 'vue';
 
 import Header from './components/Header.vue' 
 import CardList from './components/CardList.vue'  
@@ -37,10 +37,10 @@ const fetchFavorites = async ()=>{
                 return item;
             }
             return {
-                ...item,
+               ...item,
                 isFavorite:true,
                 favoriteId:favorite.id,
-            }
+            };
         });
         
 console.log(items.value)
@@ -50,6 +50,9 @@ console.log(items.value)
 
 
 
+}
+const addToFavorite =async(item)=>{
+    item.isFavorite = true
 }
 
 const fetchItems =async () =>{
@@ -93,6 +96,7 @@ onMounted( async () =>{
     await fetchFavorites();
 })
 watch(filters,fetchItems)
+provide('addToFavorite', addToFavorite);
 
 // onMounted(async()=>{
 //     // fetch('https://033b20b544163707.mokky.dev/items')
@@ -159,7 +163,7 @@ watch(filters,fetchItems)
                     </div>
                 </div>
             </div>
-            <CardList :items="items" />
+            <CardList :items="items"  @addToFavorite="addToFavorite"/>
         </div>  
     </div>
     

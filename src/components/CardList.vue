@@ -9,6 +9,7 @@ const onClickAdd = ()=>{
   alert('added')
 }
 
+
 </script>
 
 <template>
@@ -24,12 +25,13 @@ const onClickAdd = ()=>{
             :isAdded="true"
             /> -->
             <Card v-for="item in items"
+              :id="item.id"
               :key="item.id"
               :title = "item.title"
               :imageUrl = "item.imageUrl"
               :price = "item.price"
               :onClickAdd = "onClickAdd"
-              :isFavorite = "false"
+              :isFavorite = "item.isFavorite"
               
             />
         
