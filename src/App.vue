@@ -51,8 +51,37 @@ console.log(items.value)
 
 
 }
-const addToFavorite =async(item)=>{
-    item.isFavorite = true
+//Card.vue-i megic  onClickFavorite click favorite aneluc  kanchum enq addToFavorite function 
+const addToFavorite = async(item) => {
+    // item.isFavorite = true
+    // item.isFavorite = !item.isFavorite
+    // console.log(item)
+    try{
+
+        item.isFavorite = !item.isFavorite
+        if(!item.isFavorite){
+
+                const obj = {
+                 parentId:item.id
+              }
+         
+            const { data } = await  axios.post(`https://033b20b544163707.mokky.dev/favorites`,obj)
+           
+            item.favoriteId = data.id;
+            console.log(data)
+
+        }else{
+            // item.isFavorite = false;
+            await  axios.delete(`https://033b20b544163707.mokky.dev/favorites/${item.favoriteId}`)
+            item.favoriteId = null;
+        }
+       
+
+    }catch (err) {
+
+        console.log(err)
+
+    }
 }
 
 const fetchItems =async () =>{
@@ -69,10 +98,11 @@ const fetchItems =async () =>{
         const { data } = await  axios.get(`https://033b20b544163707.mokky.dev/items`, {
             params
         })
-        
+        // cikl enq frum data-i vra  ev tvjalnery pahum enq tvjal formatov avelacnum enq naxnakan  isFavorite:false,isAdded:false
         items.value = data.map((obj)=>({
             ...obj,
             isFavorite:false,
+            favoriteId:null,
             isAdded:false
         }))
         console.log(items.value)
@@ -82,12 +112,6 @@ const fetchItems =async () =>{
     }
 
 }
-
-
-
-
-
-
 
 
 onMounted( async () =>{

@@ -1,7 +1,7 @@
 <script setup>
-import {inject} from 'vue'
+// import {inject} from 'vue'
 
-defineProps({
+ defineProps({
     id:Number,
     title: String,
     imageUrl: String,
@@ -11,13 +11,18 @@ defineProps({
     onClickFavorite:Function,
    
 })
-const addToFavorite = inject('addToFavorite')
-const onClickFavorite = ()=>{
-    const obj={
-        parentId:id,
+// const addToFavorite = inject('addToFavorite')
+// menq ogtagorcel enq props bajc nujn fwunkcian karanq kanchenq aranc propsi  
+// function ashxatacnum enq  arden CardList.vue -um    :onClickFavorite="addToFavorite(item)"
+// const onClickFavorite = ()=>{
+//     alert()
+//     const obj = {
+//         ...props,
+//         parentId:props.id,
 
-    };
-}
+//     };
+//     addToFavorite(obj)
+// }
 
 
 </script>
