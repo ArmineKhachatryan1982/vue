@@ -1,13 +1,31 @@
 <script setup>
+// import {inject} from 'vue'
 import Card from './Card.vue'
+
+
+// const addToFavorite = inject('addToFavorite')
+
+// const onClickFavorite = ()=>{
+//     alert()
+//     const obj = {
+//         ...props,
+//         parentId:props.id,
+
+//     };
+//     addToFavorite(obj)
+// }
 
 defineProps({
   items:Array
 })
+// injecti poxaren ogtagorcenq emit
+const emit=defineEmits(['addToFavorite']);
 
 const onClickAdd = ()=>{
-  alert('added')
+  // alert('added')
+  emit('addToFavorite',)
 }
+
 
 </script>
 
@@ -24,12 +42,16 @@ const onClickAdd = ()=>{
             :isAdded="true"
             /> -->
             <Card v-for="item in items"
+              :id="item.id"
               :key="item.id"
               :title = "item.title"
               :imageUrl = "item.imageUrl"
               :price = "item.price"
-              :isFavorite = "false"
-              :onClickAdd = "onClickAdd"
+           
+              :onClickFavorite = "()=>emit('addToFavorite',item)" 
+              :isFavorite = "item.isFavorite"
+           
+              
             />
         
 

@@ -1,14 +1,28 @@
 <script setup>
-defineProps({
+// import {inject} from 'vue'
+
+ defineProps({
+    id:Number,
     title: String,
     imageUrl: String,
     price: Number,
     isFavorite:Boolean,
     isAdded:Boolean,
-    onClickAdd:Function,
     onClickFavorite:Function,
    
 })
+// const addToFavorite = inject('addToFavorite')
+// menq ogtagorcel enq props bajc nujn fwunkcian karanq kanchenq aranc propsi  
+// function ashxatacnum enq  arden CardList.vue -um    :onClickFavorite="addToFavorite(item)"
+// const onClickFavorite = ()=>{
+//     alert()
+//     const obj = {
+//         ...props,
+//         parentId:props.id,
+
+//     };
+//     addToFavorite(obj)
+// }
 
 
 </script>

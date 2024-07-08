@@ -1,54 +1,163 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref, watch  } from 'vue';
+import { onMounted, ref,reactive,provide, watch   } from 'vue';
 
 import Header from './components/Header.vue' 
-import Card from './components/Card.vue' 
 import CardList from './components/CardList.vue'  
 import Drawer from './components/Drawer.vue' 
 // ref mez misht veradarznum e objekt, dra hamar arjeqnery vercnelwuc dimum enq valuin
 
 const items = ref([]) //{ value:[] }
-const sortBy = ref('');
-const searchQuery = ref('');
-const onChangeSelect = (event) => {
-    sortBy.value=event.target.value
+
+const filters = reactive({
+    sortBy:'title',
+    searchQuery: '',
+})
+
+const onChangeSearchInput = (event)=>{
+    
+    filters.searchQuery = event.target.value
 }
 
-onMounted(async()=>{
-    // fetch('https://033b20b544163707.mokky.dev/items')
-    // .then((res)=>res.json())
-    // .then((data)=>{
-    //     console.log(data)
-    // })
-    // axios.get('https://033b20b544163707.mokky.dev/items').then((resp)=>console.log(resp.data))
+const onChangeSelect = (event) => {
+    
+   filters.sortBy = event.target.value
+  
+}
+const fetchFavorites = async ()=>{
+
     try{
-        const { data } = await  axios.get('https://033b20b544163707.mokky.dev/items')
         
+        const { data:favorites } = await  axios.get(`https://033b20b544163707.mokky.dev/favorites`)
         
-        items.value = data
+        items.value = items.value.map(item =>{
+            const favorite = favorites.find(favorite =>favorite.parentId === item.id )
+            
+            if(!favorite){
+                return item;
+            }
+            return {
+               ...item,
+                isFavorite:true,
+                favoriteId:favorite.id,
+            };
+        });
+        
+console.log(items.value)
+    }catch(err){
+        console.log(err)
+    }
+
+
+
+}
+//Card.vue-i megic  onClickFavorite click favorite aneluc  kanchum enq addToFavorite function 
+const addToFavorite = async(item) => {
+  
+    try{
+     
+
+        if(!item.isFavorite){
+           
+                const obj = {
+                 parentId:item.id
+              }
+              item.isFavorite = true
+         
+            const { data } = await  axios.post(`https://033b20b544163707.mokky.dev/favorites`,obj)
+           
+            item.favoriteId = data.id;
+            console.log(data)
+
+        }else{
+            // alert(444);
+            item.isFavorite = false;
+            await  axios.delete(`https://033b20b544163707.mokky.dev/favorites/${item.favoriteId}`)
+            item.favoriteId = null;
+        }
+       
+
+    }catch (err) {
+
+        console.log(err)
+
+    }
+}
+
+const fetchItems =async () =>{
+
+    try{
+        const params = {
+            sortBy:filters.sortBy,
+           
+        }
+        if(filters.searchQuery){
+            params.title = `*${filters.searchQuery}*`;
+        }
+      
+        const { data } = await  axios.get(`https://033b20b544163707.mokky.dev/items`, {
+            params
+        })
+        // cikl enq frum data-i vra  ev tvjalnery pahum enq tvjal formatov avelacnum enq naxnakan  isFavorite:false,isAdded:false
+        items.value = data.map((obj)=>({
+            ...obj,
+            isFavorite:false,
+            favoriteId:null,
+            isAdded:false
+        }))
         console.log(items.value)
 
     }catch(err){
         console.log(err)
-
     }
-});
+
+}
+
+
+onMounted( async () =>{
+
+    await fetchItems();
+    await fetchFavorites();
+})
+watch(filters,fetchItems)
+provide('addToFavorite', addToFavorite);
+
+// onMounted(async()=>{
+//     // fetch('https://033b20b544163707.mokky.dev/items')
+//     // .then((res)=>res.json())
+//     // .then((data)=>{
+//     //     console.log(data)
+//     // })
+//     // axios.get('https://033b20b544163707.mokky.dev/items').then((resp)=>console.log(resp.data))
+//     try{
+//         const { data } = await  axios.get('https://033b20b544163707.mokky.dev/items')
+        
+        
+//         items.value = data
+//         console.log(items.value)
+
+//     }catch(err){
+//         console.log(err)
+
+//     }
+// });
 // kochvum e hooker watch
-watch(sortBy,async () => {
-    try{
-        const { data } = await  axios.get('https://033b20b544163707.mokky.dev/items?sortBy='+sortBy.value)
+// watch(filters,async () => {
+//     try{
+//         console.log(7777)
+//         const { data } = await  axios.get(
+//             'https://033b20b544163707.mokky.dev/items?sortBy='+filters.sortBy)
         
         
-        items.value = data
-        console.log(items.value)
+//         items.value = data
+//         console.log(items.value)
 
-    }catch(err){
-        console.log(err)
+//     }catch(err){
+//         console.log(err)
 
-    }
+//     }
 
-});
+// });
 
 </script>
 
@@ -70,6 +179,7 @@ watch(sortBy,async () => {
                     <div class="relative">
                         <img class="absolute left-4 top-3" src="/search.svg">
                         <input
+                           @input="onChangeSearchInput"
                             class="border rounded-md py-2 pl-11 pr-4 outline-none focuse:border-gray-400"
                             type="text"
                             placeholder="Поиск"
@@ -77,7 +187,7 @@ watch(sortBy,async () => {
                     </div>
                 </div>
             </div>
-            <CardList :items="items" />
+            <CardList :items="items"  @addToFavorite="addToFavorite"/>
         </div>  
     </div>
     
