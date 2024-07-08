@@ -53,17 +53,16 @@ console.log(items.value)
 }
 //Card.vue-i megic  onClickFavorite click favorite aneluc  kanchum enq addToFavorite function 
 const addToFavorite = async(item) => {
-    // item.isFavorite = true
-    // item.isFavorite = !item.isFavorite
-    // console.log(item)
+  
     try{
+     
 
-        item.isFavorite = !item.isFavorite
         if(!item.isFavorite){
-
+           
                 const obj = {
                  parentId:item.id
               }
+              item.isFavorite = true
          
             const { data } = await  axios.post(`https://033b20b544163707.mokky.dev/favorites`,obj)
            
@@ -71,7 +70,8 @@ const addToFavorite = async(item) => {
             console.log(data)
 
         }else{
-            // item.isFavorite = false;
+            // alert(444);
+            item.isFavorite = false;
             await  axios.delete(`https://033b20b544163707.mokky.dev/favorites/${item.favoriteId}`)
             item.favoriteId = null;
         }
