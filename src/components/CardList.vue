@@ -19,12 +19,12 @@ defineProps({
   items:Array
 })
 // injecti poxaren ogtagorcenq emit
-const emit=defineEmits(['addToFavorite']);
+const emit = defineEmits(['addToFavorite','addToCart']);
 
-const onClickAdd = ()=>{
-  // alert('added')
-  emit('addToFavorite',)
-}
+// const onClickAdd = ()=>{
+//   // alert('added')
+//   emit('addToFavorite',)
+// }
 
 
 </script>
@@ -49,6 +49,7 @@ const onClickAdd = ()=>{
               :price = "item.price"
            
               :onClickFavorite = "()=>emit('addToFavorite',item)" 
+              :onClickAdd = "()=>emit('addToCart',item)"
               :isFavorite = "item.isFavorite"
            
               

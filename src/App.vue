@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref,reactive,provide, watch   } from 'vue';
+import { onMounted, ref,reactive,provide, watch,   } from 'vue';
 
 import Header from './components/Header.vue' 
 import CardList from './components/CardList.vue'  
@@ -8,6 +8,18 @@ import Drawer from './components/Drawer.vue'
 // ref mez misht veradarznum e objekt, dra hamar arjeqnery vercnelwuc dimum enq valuin
 
 const items = ref([]) //{ value:[] }
+const cart = ref([]) //define array
+
+
+const drawerOpen = ref(false)
+const closeDrawer = () =>{
+
+    drawerOpen.value = false
+}
+const openDrawer = () =>{
+    
+    drawerOpen.value = true
+}
 
 const filters = reactive({
     sortBy:'title',
@@ -17,6 +29,12 @@ const filters = reactive({
 const onChangeSearchInput = (event)=>{
     
     filters.searchQuery = event.target.value
+}
+const addToCart =(item)=>{
+    cart.value.push(item);
+    console.log("aaa")
+    console.log|(item)
+
 }
 
 const onChangeSelect = (event) => {
@@ -120,7 +138,10 @@ onMounted( async () =>{
     await fetchFavorites();
 })
 watch(filters,fetchItems)
-provide('addToFavorite', addToFavorite);
+provide('cartActions', {
+    closeDrawer,
+    openDrawer
+});
 
 // onMounted(async()=>{
 //     // fetch('https://033b20b544163707.mokky.dev/items')
@@ -162,9 +183,9 @@ provide('addToFavorite', addToFavorite);
 </script>
 
 <template>
-    <!-- <Drawer /> -->
+ <Drawer v-if = "drawerOpen"/>
     <div class="bg-white w-4/5 m-auto  rounded-xl shadow-xl mt-10">
-        <Header />
+        <Header @open-drawer="openDrawer" />
        
         <div class="p-10">
             <div class=" border flex justify-between items-center">
@@ -187,7 +208,7 @@ provide('addToFavorite', addToFavorite);
                     </div>
                 </div>
             </div>
-            <CardList :items="items"  @addToFavorite="addToFavorite"/>
+            <CardList :items="items"  @add-to-favorite="addToFavorite" @add-to-cart="addToCart"/>
         </div>  
     </div>
     

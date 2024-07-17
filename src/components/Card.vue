@@ -9,6 +9,7 @@
     isFavorite:Boolean,
     isAdded:Boolean,
     onClickFavorite:Function,
+    onClickAdd:Function
    
 })
 // const addToFavorite = inject('addToFavorite')
